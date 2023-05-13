@@ -46,11 +46,13 @@
           </td>
         </tr>
         <tr>
-          <td>2</td>
-          <td>プレイヤー2</td>
-          <td>0</td>
-          <td></td>
-          <td>
+  <td></td>
+  <td></td>
+  <td id="total-score"></td>
+  <td></td>
+  <td></td>
+</tr>
+
             <button onclick="addRow(this.parentNode.parentNode)">追加</button>
             <button onclick="deleteRow(this.parentNode.parentNode)">削除</button>
           </td>
@@ -97,6 +99,25 @@
           editCell(this);
         };
       }
+      
+      function calculateTotalScore() {
+  let total = 0;
+  const scoreCells = document.querySelectorAll('td:nth-child(3)');
+  for (let i = 0; i < scoreCells.length; i++) {
+    const score = parseInt(scoreCells[i].textContent);
+    if (!isNaN(score)) {
+      total += score;
+    }
+  }
+  document.getElementById('total-score').textContent = total;
+}
+
+// スコアが変更されたときに合計点数を計算する
+const scoreInputs = document.querySelectorAll('td:nth-child(3)');
+for (let i = 0; i < scoreInputs.length; i++) {
+  scoreInputs[i].addEventListener('input', calculateTotalScore);
+}
+
     </script>
   </body>
 </html>
