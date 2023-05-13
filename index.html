@@ -31,6 +31,7 @@
   <input type="text" id="age" placeholder="年齢">
   <input type="text" id="email" placeholder="メールアドレス">
   <button onclick="addRow()">行を追加する</button>
+  <button onclick="deleteRow(this)">Delete</button>
   
   <script>
     function addRow() {
@@ -53,6 +54,12 @@
       ageCell.innerHTML = ageInput;
       emailCell.innerHTML = emailInput;
     }
+    
+    function deleteRow(btn) {
+  var row = btn.parentNode.parentNode;
+  row.parentNode.removeChild(row);
+}
+
   </script>
 </body>
 </html>
