@@ -2,10 +2,57 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>タイトル</title>
+  <title>テーブルに新しい行を追加する</title>
 </head>
 <body>
-  <h1>見出し</h1>
-  <p>本文</p>
+  <table id="myTable">
+    <thead>
+      <tr>
+        <th>名前</th>
+        <th>年齢</th>
+        <th>メールアドレス</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>山田太郎</td>
+        <td>25</td>
+        <td>yamada@example.com</td>
+      </tr>
+      <tr>
+        <td>鈴木花子</td>
+        <td>30</td>
+        <td>suzuki@example.com</td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  <input type="text" id="name" placeholder="名前">
+  <input type="text" id="age" placeholder="年齢">
+  <input type="text" id="email" placeholder="メールアドレス">
+  <button onclick="addRow()">行を追加する</button>
+  
+  <script>
+    function addRow() {
+      // テーブルを取得
+      var table = document.getElementById("myTable");
+
+      // 新しい行を作成
+      var newRow = table.insertRow();
+
+      // 新しいセルを作成
+      var nameCell = newRow.insertCell(0);
+      var ageCell = newRow.insertCell(1);
+      var emailCell = newRow.insertCell(2);
+
+      // 入力された値を取得してセルに追加
+      var nameInput = document.getElementById("name").value;
+      var ageInput = document.getElementById("age").value;
+      var emailInput = document.getElementById("email").value;
+      nameCell.innerHTML = nameInput;
+      ageCell.innerHTML = ageInput;
+      emailCell.innerHTML = emailInput;
+    }
+  </script>
 </body>
 </html>
