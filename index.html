@@ -27,11 +27,7 @@
         cell.innerHTML = "名前" + (j+1);
         for (var k = 1; k <= num; k++) {
           cell = row.insertCell(k);
-          cell.innerHTML = '<select>';
-          for (var n = 1; n <= 12; n++) {
-            cell.innerHTML += '<option value="' + n + '">' + n + '</option>';
-          }
-          cell.innerHTML += '</select>';
+          cell.innerHTML = '<input type="checkbox">';
         }
       }
       table.appendChild(tbody); // テーブルにテーブルボディを追加する
