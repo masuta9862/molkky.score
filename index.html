@@ -8,60 +8,45 @@
   <table id="myTable">
   <thead>
     <tr>
+      <th>#</th>
       <th>Name</th>
       <th>Age</th>
-      <th>Country</th>
-      <th></th>
+      <th>Email</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>John</td>
-      <td>25</td>
-      <td>USA</td>
-      <td><button onclick="deleteRow(this)">Delete</button></td>
+      <td>1</td>
+      <td contenteditable="true">John</td>
+      <td contenteditable="true">30</td>
+      <td contenteditable="true">john@example.com</td>
     </tr>
     <tr>
-      <td>Jane</td>
-      <td>30</td>
-      <td>Canada</td>
-      <td><button onclick="deleteRow(this)">Delete</button></td>
+      <td>2</td>
+      <td contenteditable="true">Jane</td>
+      <td contenteditable="true">25</td>
+      <td contenteditable="true">jane@example.com</td>
     </tr>
   </tbody>
-  <tfoot>
-    <tr>
-      <td><input type="text" id="name"></td>
-      <td><input type="number" id="age"></td>
-      <td><input type="text" id="country"></td>
-      <td><button onclick="addRow()">Add</button></td>
-    </tr>
-  </tfoot>
 </table>
 
   <script>
-    function addRow() {
-  var name = document.getElementById("name").value;
-  var age = document.getElementById("age").value;
-  var country = document.getElementById("country").value;
+    const table = document.getElementById("myTable");
+const tbody = table.querySelector("tbody");
+const rows = tbody.getElementsByTagName("tr");
 
-  var table = document.getElementById("myTable").getElementsByTagName("tbody")[0];
-  var row = table.insertRow(-1);
-  var cell1 = row.insertCell(0);
-  var cell2 = row.insertCell(1);
-  var cell3 = row.insertCell(2);
-  var cell4 = row.insertCell(3);
-  cell1.innerHTML = name;
-  cell2.innerHTML = age;
-  cell3.innerHTML = country;
-  cell4.innerHTML = "<button onclick='deleteRow(this)'>Delete</button>";
-  document.getElementById("name").value = "";
-  document.getElementById("age").value = "";
-  document.getElementById("country").value = "";
-}
-
-function deleteRow(btn) {
-  var row = btn.parentNode.parentNode;
-  row.parentNode.removeChild(row);
+for (let i = 0; i < rows.length; i++) {
+  const row = rows[i];
+  const cells = row.getElementsByTagName("td");
+  for (let j = 1; j < cells.length; j++) {
+    cells[j].addEventListener("click", function() {
+      this.contentEditable = true;
+      this.focus();
+    });
+    cells[j].addEventListener("blur", function() {
+      this.contentEditable = false;
+    });
+  }
 }
 
   </script>
