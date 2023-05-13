@@ -5,13 +5,14 @@
   <title>テーブルに新しい行を追加する</title>
 </head>
 <body>
-  <table id="myTable">
+    <table id="myTable">
   <thead>
     <tr>
       <th>#</th>
       <th>Name</th>
       <th>Age</th>
       <th>Email</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -20,23 +21,38 @@
       <td contenteditable="true">John</td>
       <td contenteditable="true">30</td>
       <td contenteditable="true">john@example.com</td>
+      <td>
+        <button class="btn-delete">Delete</button>
+      </td>
     </tr>
     <tr>
       <td>2</td>
       <td contenteditable="true">Jane</td>
       <td contenteditable="true">25</td>
       <td contenteditable="true">jane@example.com</td>
+      <td>
+        <button class="btn-delete">Delete</button>
+      </td>
     </tr>
   </tbody>
 </table>
 
+<button id="btn-add">Add Row</button>
+
   <script>
-    const table = document.getElementById("myTable");
+   const table = document.getElementById("myTable");
 const tbody = table.querySelector("tbody");
 const rows = tbody.getElementsByTagName("tr");
+const btnAdd = document.getElementById("btn-add");
+
+btnAdd.addEventListener("click", function() {
+  const newRow = createRow();
+  tbody.appendChild(newRow);
+});
 
 for (let i = 0; i < rows.length; i++) {
   const row = rows[i];
+  const btnDelete = row.querySelector(".btn-delete");
   const cells = row.getElementsByTagName("td");
   for (let j = 1; j < cells.length; j++) {
     cells[j].addEventListener("click", function() {
@@ -47,6 +63,42 @@ for (let i = 0; i < rows.length; i++) {
       this.contentEditable = false;
     });
   }
+  btnDelete.addEventListener("click", function() {
+    tbody.removeChild(row);
+  });
+}
+
+function createRow() {
+  const newRow = document.createElement("tr");
+  const num = rows.length + 1;
+  const tdNum = createCell(num);
+  const tdName = createCell("");
+  const tdAge = createCell("");
+  const tdEmail = createCell("");
+  const tdActions = createCell(createDeleteButton());
+  newRow.appendChild(tdNum);
+  newRow.appendChild(tdName);
+  newRow.appendChild(tdAge);
+  newRow.appendChild(tdEmail);
+  newRow.appendChild(tdActions);
+  return newRow;
+}
+
+function createCell(value) {
+  const td = document.createElement("td");
+  td.contentEditable = true;
+  td.innerText = value;
+  return td;
+}
+
+function createDeleteButton() {
+  const btnDelete = document.createElement("button");
+  btnDelete.innerText = "Delete";
+  btnDelete.classList.add("btn-delete");
+  btnDelete.addEventListener("click", function() {
+    tbody.removeChild(newRow);
+  });
+  return btnDelete;
 }
 
   </script>
