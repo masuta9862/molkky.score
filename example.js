@@ -29,4 +29,4 @@
         }
       }
       table.appendChild(tbody); // テーブルにテーブルボディを追加する
-    
+    }
