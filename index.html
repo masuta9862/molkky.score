@@ -1,106 +1,102 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>テーブルに新しい行を追加する</title>
-</head>
-<body>
-    <table id="myTable">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Name</th>
-      <th>Age</th>
-      <th>Email</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td contenteditable="true">John</td>
-      <td contenteditable="true">30</td>
-      <td contenteditable="true">john@example.com</td>
-      <td>
-        <button class="btn-delete">Delete</button>
-      </td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td contenteditable="true">Jane</td>
-      <td contenteditable="true">25</td>
-      <td contenteditable="true">jane@example.com</td>
-      <td>
-        <button class="btn-delete">Delete</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+  <head>
+    <meta charset="UTF-8">
+    <title>スコアシート</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th, td {
+        text-align: center;
+        border: 1px solid black;
+        padding: 8px;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .edit-input {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>スコアシート</h1>
+    <table id="score-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>名前</th>
+          <th>スコア</th>
+          <th>備考</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>プレイヤー1</td>
+          <td>0</td>
+          <td></td>
+          <td>
+            <button onclick="addRow(this.parentNode.parentNode)">追加</button>
+            <button onclick="deleteRow(this.parentNode.parentNode)">削除</button>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>プレイヤー2</td>
+          <td>0</td>
+          <td></td>
+          <td>
+            <button onclick="addRow(this.parentNode.parentNode)">追加</button>
+            <button onclick="deleteRow(this.parentNode.parentNode)">削除</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-<button id="btn-add">Add Row</button>
+    <script>
+      function addRow(row) {
+        const newRow = row.cloneNode(true);
+        newRow.querySelector('td:first-child').textContent = row.parentNode.rows.length;
+        newRow.querySelector('td:nth-child(2)').textContent = '';
+        newRow.querySelector('td:nth-child(3)').textContent = '0';
+        newRow.querySelector('td:nth-child(4)').textContent = '';
+        newRow.querySelector('button:nth-child(1)').onclick = function() { addRow(newRow) };
+        newRow.querySelector('button:nth-child(2)').onclick = function() { deleteRow(newRow) };
+        row.parentNode.insertBefore(newRow, row.nextSibling);
+      }
 
-  <script>
-   const table = document.getElementById("myTable");
-const tbody = table.querySelector("tbody");
-const rows = tbody.getElementsByTagName("tr");
-const btnAdd = document.getElementById("btn-add");
+      function deleteRow(row) {
+        if (row.parentNode.rows.length > 2) {
+          row.parentNode.removeChild(row);
+          for (let i = 1; i < row.parentNode.rows.length; i++) {
+            row.parentNode.rows[i].querySelector('td:first-child').textContent = i;
+          }
+        }
+      }
 
-btnAdd.addEventListener("click", function() {
-  const newRow = createRow();
-  tbody.appendChild(newRow);
-});
+      function editCell(cell) {
+        const input = document.createElement('input');
+        input.className = 'edit-input';
+        input.value = cell.textContent;
+        input.onblur = function() {
+          cell.textContent = this.value;
+        };
+        cell.innerHTML = '';
+        cell.appendChild(input);
+        input.focus();
+      }
 
-for (let i = 0; i < rows.length; i++) {
-  const row = rows[i];
-  const btnDelete = row.querySelector(".btn-delete");
-  const cells = row.getElementsByTagName("td");
-  for (let j = 1; j < cells.length; j++) {
-    cells[j].addEventListener("click", function() {
-      this.contentEditable = true;
-      this.focus();
-    });
-    cells[j].addEventListener("blur", function() {
-      this.contentEditable = false;
-    });
-  }
-  btnDelete.addEventListener("click", function() {
-    tbody.removeChild(row);
-  });
-}
-
-function createRow() {
-  const newRow = document.createElement("tr");
-  const num = rows.length + 1;
-  const tdNum = createCell(num);
-  const tdName = createCell("");
-  const tdAge = createCell("");
-  const tdEmail = createCell("");
-  const tdActions = createCell(createDeleteButton());
-  newRow.appendChild(tdNum);
-  newRow.appendChild(tdName);
-  newRow.appendChild(tdAge);
-  newRow.appendChild(tdEmail);
-  newRow.appendChild(tdActions);
-  return newRow;
-}
-
-function createCell(value) {
-  const td = document.createElement("td");
-  td.contentEditable = true;
-  td.innerText = value;
-  return td;
-}
-
-function createDeleteButton() {
-  const btnDelete = document.createElement("button");
-  btnDelete.innerText = "Delete";
-  btnDelete.classList.add("btn-delete");
-  btnDelete.addEventListener("click", function() {
-    tbody.removeChild(newRow);
-  });
-  return btnDelete;
-}
-
-  </script>
-</body>
+      const cells = document.querySelectorAll('td:not(:last-child)');
+      for (let i = 0; i < cells.length; i++) {
+        cells[i].onclick = function() {
+          editCell(this);
+        };
+      }
+    </script>
+  </body>
 </html>
